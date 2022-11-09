@@ -193,7 +193,7 @@ class TestAccountService(TestCase):
     ######################################################################
     #  S E C U R I T Y   T E S T   C A S E S
     ######################################################################
-    def  test_security_headers(self):
+    def test_security_headers(self):
         """It should return security headers"""
         resp = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -206,3 +206,10 @@ class TestAccountService(TestCase):
         }
         for key, value in headers.items():
             self.assertEqual(resp.headers.get(key), value)
+
+    def test_cors_policies(self):
+        """It should return cors policies"""
+        resp = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        key = "Access-Control-Allow-Origin"
+        self.assertEqual(resp.headers.get(key), "*")
